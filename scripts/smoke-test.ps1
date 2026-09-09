@@ -8,9 +8,9 @@
 $ErrorActionPreference = "Stop"
 $Gateway = "http://localhost:8080"
 
-function Pass($msg) { Write-Host "✅ $msg" -ForegroundColor Green }
-function Fail($msg) { Write-Host "❌ $msg" -ForegroundColor Red; exit 1 }
-function Info($msg) { Write-Host "⏳ $msg" -ForegroundColor Yellow }
+function Pass($msg) { Write-Host "ok $msg" -ForegroundColor Green }
+function Fail($msg) { Write-Host "err $msg" -ForegroundColor Red; exit 1 }
+function Info($msg) { Write-Host "info $msg" -ForegroundColor Yellow }
 
 Write-Host "=========================================="
 Write-Host "  Smoke Test - Automated Acceptance"
