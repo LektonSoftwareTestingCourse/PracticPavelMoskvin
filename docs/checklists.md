@@ -10,22 +10,22 @@
 
 Этот чек-лист идентичен чек-листу практики 1 и сверен со [`scripts/smoke-test.sh`](../scripts/smoke-test.sh).
 
-- [ ] `docker compose up -d` поднимает все 11 сервисов + PostgreSQL + RabbitMQ без ошибок
-- [ ] `docker compose ps` — все контейнеры `Up` (healthy)
-- [ ] Health-check Gateway: `curl http://localhost:8080/health` → 200
-- [ ] Health-check Card Management: `curl http://localhost:8081/health` → 200
-- [ ] Health-check Switch: `curl http://localhost:8082/health` → 200
-- [ ] Health-check Authorization: `curl http://localhost:8083/health` → 200
-- [ ] Health-check Terminal Simulator: `curl http://localhost:8085/health` → 200
-- [ ] Health-check Merchant Simulator: `curl http://localhost:8084/health` → 200
-- [ ] Health-check Transaction Logger: `curl http://localhost:8088/health` → 200
-- [ ] Health-check Bin Lookup: `curl http://localhost:8096/actuator/health` → 200
-- [ ] Health-check Notification Service: `curl http://localhost:8097/actuator/health` → 200
-- [ ] RabbitMQ Management UI доступен: `http://localhost:15672` (логин `smp`, пароль `smp`)
-- [ ] Web Dashboard доступен: `http://localhost:3000`
-- [ ] `./scripts/smoke-test.sh` завершается `🎉 ALL CHECKS PASSED`
-- [ ] Генерация карт: `POST /api/cards/generate` отрабатывает (≥ 20 карт)
-- [ ] Симулятор терминалов: `POST /api/simulator/terminal/run` отправляет транзакции (50 submitted)
+- [x] `docker compose up -d` поднимает все 11 сервисов + PostgreSQL + RabbitMQ без ошибок
+- [x] `docker compose ps` — все контейнеры `Up` (healthy)
+- [x] Health-check Gateway: `curl http://localhost:8080/health` → 200
+- [x] Health-check Card Management: `curl http://localhost:8081/health` → 200
+- [x] Health-check Switch: `curl http://localhost:8082/health` → 200
+- [x] Health-check Authorization: `curl http://localhost:8083/health` → 200
+- [x] Health-check Terminal Simulator: `curl http://localhost:8085/health` → 200
+- [x] Health-check Merchant Simulator: `curl http://localhost:8084/health` → 200
+- [x] Health-check Transaction Logger: `curl http://localhost:8088/health` → 200
+- [x] Health-check Bin Lookup: `curl http://localhost:8096/actuator/health` → 200
+- [x] Health-check Notification Service: `curl http://localhost:8097/actuator/health` → 200
+- [x] RabbitMQ Management UI доступен: `http://localhost:15672` (логин `smp`, пароль `smp`)
+- [x] Web Dashboard доступен: `http://localhost:3000`
+- [x] `./scripts/smoke-test.sh` завершается `🎉 ALL CHECKS PASSED`
+- [x] Генерация карт: `POST /api/cards/generate` отрабатывает (≥ 20 карт)
+- [x] Симулятор терминалов: `POST /api/simulator/terminal/run` отправляет транзакции (50 submitted)
 
 ---
 
