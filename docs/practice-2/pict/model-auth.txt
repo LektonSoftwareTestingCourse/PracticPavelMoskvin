@@ -1,0 +1,44 @@
+# ============================================================================
+# СМП — Authorization Service: модель попарного (pairwise) тестирования
+# Требования: tz/04-authorization.md, п. 2 «Алгоритм проверки»
+# Формат: Microsoft PICT (pict model-auth.txt > cases-auth.txt)
+# ============================================================================
+# Параметры модели описывают вход авторизации не абсолютными значениями, а
+# отношением к границе (below / equal / above). Это связывает попарный набор
+# с анализом граничных значений: equal — точка ON, above — точка OFF.
+# ============================================================================
+
+card_status:        ACTIVE, INACTIVE, BLOCKED, EXPIRED
+expiry:             valid, current_month, expired
+amount_vs_daily:    below, equal, above
+amount_vs_monthly:  below, equal, above
+amount_vs_balance:  below, equal, above
+terminal_type:      POS, ATM, ECOM
+mcc:                5411, 5812, 5732, 4722
+cms_availability:   up, down
+
+# ============================================================================
+# Ограничения (constraints)
+# ============================================================================
+
+# C1. Алгоритм авторизации прерывается на шаге 2: если карта не ACTIVE,
+#     до проверки лимитов и баланса дело не доходит. Комбинации
+#     «BLOCKED + превышен лимит» недостижимы и засоряли бы набор.
+IF [card_status] <> "ACTIVE" THEN [amount_vs_daily] = "below"
+    AND [amount_vs_monthly] = "below" AND [amount_vs_balance] = "below";
+
+# C2. Согласованность тестовых данных: карта в статусе EXPIRED обязана иметь
+#     истёкший expiryDate. Обратное неверно — ACTIVE с истёкшим expiryDate
+#     это валидный и важный случай (шаг 3 алгоритма, responseCode=54).
+IF [card_status] = "EXPIRED" THEN [expiry] = "expired";
+
+# C3. Истёкший срок действия отклоняет транзакцию на шаге 3, поэтому
+#     варьировать баланс в этих строках бессмысленно.
+IF [expiry] = "expired" THEN [amount_vs_balance] = "below";
+
+# C4. При недоступном Card Management данные карты не получены вовсе
+#     (шаг 1 алгоритма + п. 5 «Обработка ошибок»): статус, срок, лимиты и
+#     баланс не влияют на исход. Фиксируем нейтральный контекст.
+IF [cms_availability] = "down" THEN [card_status] = "ACTIVE"
+    AND [expiry] = "valid" AND [amount_vs_daily] = "below"
+    AND [amount_vs_monthly] = "below" AND [amount_vs_balance] = "below";

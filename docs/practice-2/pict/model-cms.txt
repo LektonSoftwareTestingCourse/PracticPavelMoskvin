@@ -1,0 +1,51 @@
+# ============================================================================
+# СМП — Card Management Service: модель попарного тестирования
+# Объект: POST /api/cards (создание карты)
+# Требования: tz/05-card-management.md, п. 2 «CRUD карт»; docs/api-spec.md
+# Формат: Microsoft PICT (pict model-cms.txt > cases-cms.txt)
+# ============================================================================
+
+bin:              valid_6, short_5, long_7, non_numeric
+cardholder_name:  valid_upper, lowercase, empty, with_digits
+currency_code:    valid_643, valid_840, wrong_length, non_numeric
+daily_limit:      positive, zero, negative
+monthly_limit:    positive, zero, negative
+initial_balance:  positive, zero, negative
+
+# ============================================================================
+# Ограничения (constraints)
+# ============================================================================
+# Правило тест-дизайна: в одном негативном кейсе допускается ровно одно
+# невалидное значение — иначе невозможно определить, какая именно проверка
+# отклонила запрос. Ограничения C1–C6 запрещают смешивать невалидные классы.
+
+# C1
+IF [bin] <> "valid_6" THEN [cardholder_name] = "valid_upper"
+    AND [currency_code] = "valid_643" AND [daily_limit] = "positive"
+    AND [monthly_limit] = "positive" AND [initial_balance] = "positive";
+
+# C2
+IF [cardholder_name] <> "valid_upper" THEN [bin] = "valid_6"
+    AND [currency_code] = "valid_643" AND [daily_limit] = "positive"
+    AND [monthly_limit] = "positive" AND [initial_balance] = "positive";
+
+# C3
+IF [currency_code] = "wrong_length" OR [currency_code] = "non_numeric" THEN
+    [bin] = "valid_6" AND [cardholder_name] = "valid_upper"
+    AND [daily_limit] = "positive" AND [monthly_limit] = "positive"
+    AND [initial_balance] = "positive";
+
+# C4
+IF [daily_limit] = "negative" THEN [bin] = "valid_6"
+    AND [cardholder_name] = "valid_upper" AND [currency_code] = "valid_643"
+    AND [monthly_limit] = "positive" AND [initial_balance] = "positive";
+
+# C5
+IF [monthly_limit] = "negative" THEN [bin] = "valid_6"
+    AND [cardholder_name] = "valid_upper" AND [currency_code] = "valid_643"
+    AND [daily_limit] = "positive" AND [initial_balance] = "positive";
+
+# C6
+IF [initial_balance] = "negative" THEN [bin] = "valid_6"
+    AND [cardholder_name] = "valid_upper" AND [currency_code] = "valid_643"
+    AND [daily_limit] = "positive" AND [monthly_limit] = "positive";
