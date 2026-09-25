@@ -30,10 +30,10 @@
 | Практика | Артефакт | Путь в репозитории | CI-проверка | LLM-проверка |
 |:---:|---|---|:---:|:---:|
 | 1 | Запуск СМП + smoke | — (health-check сервисов) | ✅ `smoke-tests` (вручную) | — |
-| 2 | Тест-дизайн и баг-репорты | `docs/practice-2/test-design.md` | — | ✅ skill-1 |
+| 2 | Тест-дизайн | `docs/practice-2/test-strategy.md`, `test-plan.md`, `test-design.md`, `checklists.md` + `docs/practice-2/pict/` | ✅ наличие и структура четырёх документов, модель PICT | ✅ skill-1 |
 | 3 | Unit-тесты | `services/{service}/src/test/java/...` | ✅ `java-services` (авто) | — |
 | 4 | API/интеграционные тесты | `services/{service}/src/test/java/...` | ✅ `java-services` (авто) | ✅ skill-4 (бонус) |
-| 5 | E2E-отчёт | `docs/practice-5/e2e-report.md` | ✅ `e2e-tests` (вручную) | ✅ skill-2 |
+| 5 | E2E-отчёт + баг-репорты | `docs/practice-5/e2e-report.md` | ✅ `e2e-tests` (вручную) | ✅ skill-2 |
 | 6 | CI/CD и нагрузочный smoke (Test Summary Report) | `docs/practice-6/test-summary.md` | ✅ `load-smoke` (вручную) | ✅ skill-3 |
 | 7 | Отчёт по метрикам | `docs/practice-7/metrics-report.md` | — | ✅ (скилл не готов) |
 | 8 | Тестовая стратегия | `docs/practice-8/test-strategy.md` | — | Защита |
@@ -122,10 +122,10 @@ CI-джоба `load-smoke` делает **smoke-проверку** скрипт�
 | Неделя | Практика | Дедлайн |
 |:---:|:---:|---|
 | 3 | 1 — Запуск СМП + smoke | Конец недели 3 |
-| 5 | 2 — Тест-дизайн и баг-репорты | Конец недели 5 |
+| 5 | 2 — Тест-дизайн | Конец недели 5 |
 | 7 | 3 — Unit-тесты | Конец недели 7 |
 | 9 | 4 — API/интеграционные тесты | Конец недели 9 |
-| 11 | 5 — E2E бизнес-сценарии | Конец недели 11 |
+| 11 | 5 — E2E бизнес-сценарии и баг-репорты | Конец недели 11 |
 | 13 | 6 — CI/CD и нагрузочный smoke | Конец недели 13 |
 | 15 | 7 — Отчётность и метрики | Конец недели 15 |
 | 16 | 8 — Финальная тестовая стратегия | Конец недели 16 |

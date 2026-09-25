@@ -236,7 +236,7 @@ services:
       dockerfile: services/terminal-simulator/Dockerfile
     restart: unless-stopped
     ports:
-      - "8085-8095:8080"
+      - "${TERMINAL_PORT:-8085}:8080"
     environment:
       - SERVER_PORT=8080
       - GATEWAY_URL=http://gateway:8080
