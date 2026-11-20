@@ -86,9 +86,9 @@ jobs:
         cache: 'maven'
 
     - name: Run java linter
-      # Full coordinates avoid flaky Maven prefix metadata resolution on a fresh runner.
+      # Full coordinates avoid prefix lookup; -U retries releases cached as absent.
       run: >-
-        mvn -f services/pom.xml -P${{ matrix.service }}
+        mvn -U -f services/pom.xml -P${{ matrix.service }}
         org.apache.maven.plugins:maven-checkstyle-plugin:3.6.0:check
 
     - name: Build services, run unit tests and coverage checks
