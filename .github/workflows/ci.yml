@@ -86,7 +86,10 @@ jobs:
         cache: 'maven'
 
     - name: Run java linter
-      run: mvn -f services/pom.xml -P${{ matrix.service }} checkstyle:check
+      # Full coordinates avoid flaky Maven prefix metadata resolution on a fresh runner.
+      run: >-
+        mvn -f services/pom.xml -P${{ matrix.service }}
+        org.apache.maven.plugins:maven-checkstyle-plugin:3.6.0:check
 
     - name: Build services, run unit tests and coverage checks
       run: mvn -f services/pom.xml -P${{ matrix.service }} install -Dcheckstyle.skip=true
