@@ -1,0 +1,62 @@
+services:
+  postgres:
+    ports:
+      - "${API_POSTGRES_PORT:-15432}:5432"
+
+  api-wiremock:
+    image: wiremock/wiremock:3.5.4
+    container_name: smp-api-wiremock
+    ports:
+      - "${API_WIREMOCK_PORT:-18089}:8080"
+    networks:
+      - smp-network
+
+  gateway-contract:
+    image: ghcr.io/${GHCR_USER:-local}/smp-gateway:latest
+    container_name: smp-gateway-contract
+    restart: unless-stopped
+    ports:
+      - "${API_CONTRACT_GATEWAY_PORT:-18080}:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SWITCH_URL=http://api-wiremock:8080
+      - AUTH_URL=http://authorization:8080
+      - CARD_MGMT_URL=http://card-management:8080
+      - LOGGER_URL=http://transaction-logger:8080
+      - TERMINAL_SIM_URL=http://terminal-simulator:8080
+      - MERCHANT_SIM_URL=http://merchant-acquirer:8080
+      - TRANSACTIONS_RATE_LIMIT_CAPACITY=1000
+      - TRANSACTIONS_RATE_LIMIT_REFILL_PER_SECOND=1000
+    depends_on:
+      - api-wiremock
+      - card-management
+      - transaction-logger
+    networks:
+      - smp-network
+    healthcheck:
+      disable: true
+
+  authorization-contract:
+    image: ghcr.io/${GHCR_USER:-local}/smp-authorization:latest
+    container_name: smp-authorization-contract
+    restart: unless-stopped
+    ports:
+      - "${API_CONTRACT_AUTH_PORT:-18083}:8080"
+    environment:
+      - SERVER_PORT=8080
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_PORT}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - BIN_LOOKUP_URL=http://api-wiremock:8080
+      - CARD_MGMT_URL=http://api-wiremock:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      api-wiremock:
+        condition: service_started
+    networks:
+      - smp-network
+    healthcheck:
+      disable: true

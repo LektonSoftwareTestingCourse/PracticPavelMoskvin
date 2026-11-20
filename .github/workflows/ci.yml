@@ -131,3 +131,44 @@ jobs:
     - name: Build frontend application
       working-directory: ./services/dashboard
       run: npm run build
+
+  api-tests:
+    runs-on: ubuntu-latest
+    needs: base-lint
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v5
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Normalize GHCR namespace to lowercase
+      run: echo "GHCR_USER=${OWNER,,}" >> "$GITHUB_ENV"
+      env:
+        OWNER: ${{ github.repository_owner }}
+
+    - name: Run API contract suite
+      run: chmod +x scripts/run-api-tests.sh && ./scripts/run-api-tests.sh
+      env:
+        API_TEST_RUNS: '3'
+
+    - name: Upload API test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-test-reports
+        path: services/api-tests/target/surefire-reports/
+        if-no-files-found: warn
+
+    - name: Show service logs on failure
+      if: failure()
+      run: docker compose -f docker-compose.yaml -f docker-compose.api-tests.yaml logs --tail=150
+
+    - name: Cleanup API test stack
+      if: always()
+      run: docker compose -f docker-compose.yaml -f docker-compose.api-tests.yaml down -v

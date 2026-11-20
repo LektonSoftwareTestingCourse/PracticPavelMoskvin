@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["mti", "stan", "responseCode", "status", "processingTimeMs"],
+  "properties": {
+    "mti": {"type": "string"},
+    "stan": {"type": "string"},
+    "rrn": {"type": ["string", "null"]},
+    "authCode": {"type": ["string", "null"]},
+    "responseCode": {"type": "string"},
+    "status": {"enum": ["APPROVED", "DECLINED"]},
+    "declineReason": {"type": ["string", "null"]},
+    "processingTimeMs": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": false
+}

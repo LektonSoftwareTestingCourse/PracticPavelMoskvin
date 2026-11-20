@@ -13,7 +13,7 @@ else
 endif
 
 # Специальные цели
-.PHONY: run stop clean build status logs smoke smoke-win test lint
+.PHONY: run stop clean build status logs smoke smoke-win api-test test lint
 .PHONY: mvn-all mvn-clean mvn-test mvn-lint mvn-service
 .PHONY: npm-install npm-lint npm-test npm-build
 
@@ -28,6 +28,7 @@ help:
 	@echo "  make status        - Containers status"
 	@echo "  make logs          - Show logs (SERVICE=gateway)"
 	@echo "  make smoke         - Run smoke tests"
+	@echo "  make api-test      - Start the stack and run JUnit API tests"
 	@echo ""
 	@echo "General"
 	@echo "  make test          - Run all tests (Maven + NPM)"
@@ -73,6 +74,13 @@ logs:
 
 smoke:
 	$(SMOKE_CMD)
+
+api-test:
+ifeq ($(OS),Windows_NT)
+	powershell -ExecutionPolicy Bypass -File scripts/run-api-tests.ps1
+else
+	chmod +x scripts/run-api-tests.sh && ./scripts/run-api-tests.sh
+endif
 
 # Общее
 test: mvn-test npm-test

@@ -34,6 +34,8 @@
         <argLine></argLine>
         <!-- E2E require docker compose; enabled via -Pe2e-tests -->
         <skipE2eTests>true</skipE2eTests>
+        <!-- Black-box API tests require docker compose; enabled via -Papi-tests -->
+        <skipApiTests>true</skipApiTests>
     </properties>
 
 
@@ -55,6 +57,7 @@
                 <module>transaction-logger</module>
                 <module>bin-lookup</module>
                 <module>notification-service</module>
+                <module>api-tests</module>
                 <module>e2e-tests</module>
             </modules>
         </profile>
@@ -95,6 +98,17 @@
             </modules>
         </profile>
 
+
+        <profile>
+            <id>api-tests</id>
+            <modules>
+                <module>common</module>
+                <module>api-tests</module>
+            </modules>
+            <properties>
+                <skipApiTests>false</skipApiTests>
+            </properties>
+        </profile>
 
         <profile>
             <id>e2e-tests</id>
