@@ -1,0 +1,8 @@
+{
+  "request": { "method": "GET", "urlPath": "/api/bin/400000" },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "jsonBody": { "bin": "400000", "issuerId": "ISS001", "issuerName": "Test issuer" }
+  }
+}

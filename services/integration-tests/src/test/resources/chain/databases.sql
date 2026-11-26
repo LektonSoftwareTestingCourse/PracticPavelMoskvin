@@ -1,0 +1,3 @@
+CREATE DATABASE cards;
+CREATE DATABASE authorization_db;
+CREATE DATABASE logger;
